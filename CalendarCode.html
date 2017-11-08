@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Page Title</title>
+		<style>
+		    #RC
+{
+background-color:#BBDEB8;
+ border-style:solid;
+ border-color:black;
+ border-spacing:2px;
+ border-width:4px;
+ height:50%;
+ width:50%;
+ text-align:center;
+ border-radius:5px;
+ visibility:hidden;
+}
+.tada
+{
+ border-radius:5px;
+}
+table td
+{
+    border-radius:2.5px;
+    height:5px;
+    width:5px;
+}
+td
+{
+    
+}
+		</style>
+		<script>
+		    var t,dy,dt,yr,k,m,ly,sum,days,i,j;
+function disp()
+{
+    document.getElementById('RC').style.visibility='visible';
+    alert('Give me a like if you find it as a flexible Code');
+}
+function incYear()
+{
+ yr=yr+1;
+ calculateDate(yr,m);
+ today(dt,m,yr);
+ document.getElementById('year').innerHTML=yr;
+ document.getElementById('month').innerHTML=convertMonth(m);
+}
+function decYear()
+{
+ yr=yr-1;
+ calculateDate(yr,m); 
+ today(dt,m,yr);
+ document.getElementById('year').innerHTML=yr;
+ document.getElementById('month').innerHTML=convertMonth(m);
+}
+function incMonth()
+{
+ m=m+1;
+ if(m>11) {incYear();m%=12;}
+ calculateDate(yr,m); 
+ today(dt,m,yr); 
+ document.getElementById('year').innerHTML=yr;
+ document.getElementById('month').innerHTML=convertMonth(m);
+}
+function decMonth()
+{
+ m=m-1;
+ if(m<0) {decYear();m=11;} 
+ calculateDate(yr,m);
+ today(dt,m,yr); 
+ document.getElementById('year').innerHTML=yr;
+ document.getElementById('month').innerHTML=convertMonth(m);
+}
+function getCal()
+{
+ var day=new Date();
+ document.getElementById('year').innerHTML=day.getFullYear();
+ document.getElementById('month').innerHTML=convertMonth(day.getMonth());
+ //document.getElementById('day').innerHTML=convertDay(day.getDay());
+ yr=day.getFullYear();
+ m=day.getMonth();
+ dt=day.getDate();
+ dy=day.getDay();
+ calculateDate(yr,m);
+ today(dt,m,yr);
+}
+function today(dt,m,yr)
+{
+ var temp=document.getElementsByTagName('td');
+ var date=new Date();
+ if(m==date.getMonth()&&yr==date.getFullYear())
+ {
+ for(i=0;i<temp.length;++i)
+ {
+ if(temp[i].innerHTML==dt)
+ {
+ temp[i].style.backgroundColor='#E758FF';
+ }
+ }
+ }
+ else 
+ return;
+}
+function calculateDate(yr,m)
+{ 
+ od=0;
+ sum=0;ly=0;
+ var str1=new Array(42);
+ leapYear(yr);
+ yr=yr-1;
+ yr%=400;
+ od=parseInt(yr/4)*2+(yr-parseInt(yr/4));
+ od%=7;
+ for(j=0;j<m;++j)
+ {
+  sum=sum+getDays(j);
+ }
+ od=(od+sum+1)%7;
+ t=od-1;
+ for(i=0,k=1;i<42;++i)
+ {
+ if(i<od)
+ {
+   if(i==0) 
+   {
+   m=(m==0)?12:m;
+   } 
+  str1[i]=getDays(m-1)-t--;
+ }
+ else if(i>=od&&k<=getDays(m))
+ str1[i]=k++;
+ else if(k>getDays(m))
+ {
+ k=1;
+ str1[i]=k++;
+ }
+ else
+ str1[i]=0;
+ }
+ displayDate(str1);
+}
+function leapYear(yr)
+{
+ if((yr%4)==0 || (yr%400)==0 && (yr%100)!=0)
+ ly=1;
+ else
+ ly=0;
+}
+function getDays(j)
+{
+ switch(j)
+ {
+ case 0:
+ days=31;
+ break;
+ case 1:
+ days=ly?29:28;
+ break;
+ case 2:
+ days=31;
+ break;
+ case 3:
+ days=30;
+ break;
+ case 4:
+ days=31;
+ break;
+ case 5:
+ days=30;
+ break;
+ case 6:
+ days=31;
+ break;
+ case 7:
+ days=31;
+ break;
+ case 8:
+ days=30;
+ break;
+ case 9:
+ days=31;
+ break;
+ case 10:
+ days=30;
+ break;
+ case 11:
+ days=31;
+ break;
+ }
+ return days;
+}
+function convertMonth(t)
+{
+ switch(parseInt(t))
+ {
+ case 0:
+ return "January";
+ case 1:
+ return "February";
+ case 2:
+ return "March";
+ case 3:
+ return "April";
+ case 4:
+ return "May";
+ case 5:
+ return "June";
+ case 6:
+ return "July";
+ case 7:
+ return "August";
+ case 8:
+ return "September";
+ case 9:
+ return "October";
+ case 10:
+ return "November";
+ case 11:
+ return "December";
+ }
+}
+function convertDay(t)
+ {
+   switch(t)
+	 {
+	 case 0:
+	 return "Sunday";
+	 case 1:
+	 return "Monday";
+	 case 2:
+	 return "Tuesday";
+	 case 3:
+	 return "Wednesday";
+	 case 4:
+	 return "Thursday";
+	 case 5:
+	 return "Friday";
+	 case 6:
+	 return "Saturday";
+	 }
+ }
+ function displayDate(str1)
+ {
+  var str=document.getElementsByTagName('td');
+  for(i=0;i<str.length;++i)
+  {
+	str[i].style.backgroundColor='#FFFFFF';
+    if(str1[i]<10)
+    str[i].innerHTML='0'+str1[i] + '<input type="checkbox">';
+    else
+    str[i].innerHTML=str1[i] + '<input type="checkbox">';
+  }
+ }
+		</script>
+	</head>
+<body onload="getCal()">
+<center><button onclick="disp()">Click Me</button></center>
+<div class="calender">
+    <br />
+    <br />
+<table id="RC" border="1" align="center">
+
+<tr>
+<th><button onclick="decYear()" ><</button></th>
+<th colspan="5" id="year" >a</th>
+<th><button onclick="incYear()" >></button></th>
+</tr>
+
+<tr>
+<th><button onclick="decMonth()" ><</button></th>
+<th colspan="5" id="month" >a</th>
+<th><button onclick="incMonth()" >></button></th>
+</tr>
+
+<!--<tr>
+<th><button><</button></th>
+<th colspan="5" id="day" >a</th>
+<th><button>></button></th>
+</tr> -->
+
+<tr>
+<th>Sunday</th>
+<th>Mon</th>
+<th>Tue</th>
+<th>Wed</th>
+<th>Thu</th>
+<th>Fri</th>
+<th>Saturday</th>
+</tr>
+
+<div class="tada"></div>
+<tr>
+<td style="background-color:white;"><span><input type="checkbox"></span></td>
+<td style="background-color:white;"><input type="checkbox"></td>
+<td style="background-color:white;"><input type="checkbox"></td>
+<td style="background-color:white;"><input type="checkbox"></td>
+<td style="background-color:white;"><input type="checkbox"></td>
+<td style="background-color:white;"><input type="checkbox"></td>
+<td style="background-color:white;"><input type="checkbox"></td>
+</tr>
+
+<tr>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+</tr>
+
+<tr>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+</tr>
+
+<tr>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+</tr>
+
+<tr>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+</tr>
+
+<tr>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+<td style="background-color:white;"></td>
+</tr>
+</div>
+
+</table>
+</div>
+</body>
+</html>
